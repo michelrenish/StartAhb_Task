@@ -1,0 +1,45 @@
+<div class="form-container">
+    <div class="form-header">
+        <h1>{{ isEditMode ? 'Edit Product' : 'Add New Product' }}</h1>
+        <a routerLink="/products" class="btn-link">Cancel</a>
+    </div>
+
+    <form [formGroup]="productForm" (ngSubmit)="onSubmit()" class="card">
+        <div class="form-group">
+            <label for="productName">Product Name</label>
+            <input type="text" id="productName" formControlName="productName" placeholder="Enter product name"
+                [class.error]="productForm.get('productName')?.invalid && productForm.get('productName')?.touched">
+            <div class="error-text"
+                *ngIf="productForm.get('productName')?.invalid && productForm.get('productName')?.touched">
+                Product Name is required.
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="productPrice">Product Price</label>
+            <input type="number" id="productPrice" formControlName="productPrice" placeholder="0.00"
+                [class.error]="productForm.get('productPrice')?.invalid && productForm.get('productPrice')?.touched">
+            <div class="error-text"
+                *ngIf="productForm.get('productPrice')?.invalid && productForm.get('productPrice')?.touched">
+                Please enter a valid price.
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="productDescription">Product Description</label>
+            <textarea id="productDescription" formControlName="productDescription" rows="4"
+                placeholder="Enter product description"
+                [class.error]="productForm.get('productDescription')?.invalid && productForm.get('productDescription')?.touched"></textarea>
+            <div class="error-text"
+                *ngIf="productForm.get('productDescription')?.invalid && productForm.get('productDescription')?.touched">
+                Description is required.
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary" [disabled]="productForm.invalid">
+                {{ isEditMode ? 'Update Product' : 'Create Product' }}
+            </button>
+        </div>
+    </form>
+</div>

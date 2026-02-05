@@ -1,0 +1,47 @@
+<div class="header-actions">
+  <div class="title-section">
+    <h1>Products</h1>
+    <div class="search-box">
+      <input 
+        type="text" 
+        [value]="searchQuery()" 
+        (input)="updateSearch($event)" 
+        placeholder="Search products..."
+        class="search-input"
+      >
+    </div>
+  </div>
+  <a routerLink="/products/new" class="btn btn-primary">
+    + Add Product
+  </a>
+</div>
+
+<div class="table-container">
+  <table class="product-table">
+    <thead>
+      <tr>
+        <th>Product Name</th>
+        <th>Price</th>
+        <th>Description</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let product of filteredProducts()">
+        <td class="font-medium">{{ product.productName }}</td>
+        <td>{{ product.productPrice | currency }}</td>
+        <td class="text-secondary">{{ product.productDescription }}</td>
+        <td class="actions">
+          <a [routerLink]="['/products/edit', product.id]" class="btn-link">Edit</a>
+          <button (click)="deleteProduct(product.id)" class="btn-link text-danger">Delete</button>
+        </td>
+      </tr>
+      <tr *ngIf="filteredProducts().length === 0">
+        <td colspan="4" class="empty-state">
+          <span *ngIf="searchQuery(); else noData">No matching products found.</span>
+          <ng-template #noData>No products found. Add one to get started!</ng-template>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
