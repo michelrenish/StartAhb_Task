@@ -24,19 +24,17 @@ export class ProductFormComponent implements OnInit {
     });
 
     isEditMode = false;
-    productId: string | null = null;
+    productId: number | null = null;
 
     ngOnInit() {
-        this.productId = this.route.snapshot.paramMap.get('id');
-        if (this.productId) {
+        const idParam = this.route.snapshot.paramMap.get('id');
+        if (idParam) {
+            this.productId = +idParam;
             this.isEditMode = true;
-            const product = this.productService.getProducts()().find(p => p.id === this.productId);
-            if (product) {
-                this.productForm.patchValue(product);
-            } else {
-                // Product not found, redirect to list
-                this.router.navigate(['/products']);
-            }
+            this.productService.getProductById(this.productId).subscribe({
+                next: (product) => this.productForm.patchValue(product),
+                error: () => this.router.navigate(['/products'])
+            });
         }
     }
 
@@ -44,11 +42,16 @@ export class ProductFormComponent implements OnInit {
         if (this.productForm.valid) {
             const formValue = this.productForm.value;
             if (this.isEditMode && this.productId) {
-                this.productService.updateProduct({ ...formValue, id: this.productId });
+                this.productService.updateProduct(this.productId, formValue).subscribe({
+                    next: () => this.router.navigate(['/products']),
+                    error: (err) => console.error('Error updating product', err)
+                });
             } else {
-                this.productService.addProduct(formValue);
+                this.productService.addProduct(formValue).subscribe({
+                    next: () => this.router.navigate(['/products']),
+                    error: (err) => console.error('Error adding product', err)
+                });
             }
-            this.router.navigate(['/products']);
         }
     }
 }

@@ -2,13 +2,8 @@
   <div class="title-section">
     <h1>Products</h1>
     <div class="search-box">
-      <input 
-        type="text" 
-        [value]="searchQuery()" 
-        (input)="updateSearch($event)" 
-        placeholder="Search products..."
-        class="search-input"
-      >
+      <input type="text" [value]="searchQuery()" (input)="updateSearch($event)" placeholder="Search products..."
+        class="search-input">
     </div>
   </div>
   <a routerLink="/products/new" class="btn btn-primary">
@@ -32,8 +27,8 @@
         <td>{{ product.productPrice | currency }}</td>
         <td class="text-secondary">{{ product.productDescription }}</td>
         <td class="actions">
-          <a [routerLink]="['/products/edit', product.id]" class="btn-link">Edit</a>
-          <button (click)="deleteProduct(product.id)" class="btn-link text-danger">Delete</button>
+          <a [routerLink]="['/products/edit', product.productId]" class="btn-link">Edit</a>
+          <button (click)="deleteProduct(product.productId!)" class="btn-link text-danger">Delete</button>
         </td>
       </tr>
       <tr *ngIf="filteredProducts().length === 0">

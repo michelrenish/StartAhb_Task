@@ -32,9 +32,12 @@ export class ProductListComponent {
         );
     });
 
-    deleteProduct(id: string) {
+    deleteProduct(id: number) {
         if (confirm('Are you sure you want to delete this product?')) {
-            this.productService.deleteProduct(id);
+            this.productService.deleteProduct(id).subscribe({
+                next: () => console.log('Product deleted'),
+                error: (err) => console.error('Error deleting product', err)
+            });
         }
     }
 
